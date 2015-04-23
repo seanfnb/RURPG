@@ -13,6 +13,8 @@ TagManager:
   - BattleManager
   - BattlePlayer
   - BattleEnemy
+  - PlayerActionButton
+  - AlertText
   layers:
   - Default
   - TransparentFX

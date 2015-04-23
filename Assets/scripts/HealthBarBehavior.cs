@@ -2,17 +2,33 @@
 using System.Collections;
 
 public class HealthBarBehavior : MonoBehaviour {
-	public float health;
-	public float maxHealth;
+	private float previousHealth;
+	private float tempHealth;
+	private float healthPercent;
+	private float health;
+
 	Vector3 startScale;
 	// Use this for initialization
 	void Start () {
-		startScale = this.transform.localScale;
+		this.startScale = this.transform.localScale;
+		this.health = this.GetComponentInParent<BattleEntity>().getHp(); //this prevents the health bar from destorying it self right at the start (see Update())
+		this.previousHealth = this.health;
+
+	}
+
+	public void updateHealth(int changeInHealth){
+		this.previousHealth = this.health;
+		this.health = this.health - changeInHealth;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		float healthPercent = health/maxHealth;
-		this.transform.localScale = new Vector3(startScale.x * healthPercent, startScale.y, startScale.z);
+		this.tempHealth = Mathf.Lerp(this.previousHealth, this.health, Time.time);
+		this.healthPercent = tempHealth/this.GetComponentInParent<BattleEntity>().getMaxHP();
+		this.transform.localScale = new Vector3(this.startScale.x * this.healthPercent, this.startScale.y, this.startScale.z);
+		if (this.tempHealth <= 0){ //if tempHealth started at 0 it would destory itself immediately
+			Debug.Log("current HP: " + this.GetComponentInParent<BattleEntity>().getHp());
+			GameObject.Destroy(this.transform.parent.gameObject);
+		}
 	}
 }
