@@ -4,7 +4,6 @@ using System.Collections;
 public class ExitStage : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other){
-		//if the thing that entered was the player, change the sprite to the opened door.
 		if (LayerMask.LayerToName(other.gameObject.layer).Equals("Player")){
 			//set list of unobtained items to emtpy list
 			GameData.current.currentLevel.unObtainedItems = new Inventory();
